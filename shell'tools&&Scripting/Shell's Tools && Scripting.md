@@ -76,5 +76,36 @@ Your task is to write a command that recursively finds all HTML files in the fol
 
 我们可以看到 `find` 命令在我们进行文件查找的时候非常有效，但当需要队所有文件进行一些操作（如 zip）的时候。如你所见现在命令们将从标准输入以及参数中获取输入。当通过管道时，我们将输入与输出进行连接。但是像 `tar` 这样的命令以参数为输入的，为了连接这些，有一个 `xargs` 命令，可以将输出作为参数使用。如 `ls | xargs rm` 将会删除这个目录中的文件。
 
-你的任务就是写一个命令，可以快速找到文件中的所有 `html` 文件并且将他们打包为 `zip`. 注意即使文件中有空格，命令也需要有效。（提示：检查 `-d` 的标志 `xargs`）。
+你的任务就是写一个命令，可以快速找到文件中的所有 `html` 文件并且将他们打包为 `zip`. 注意即使文件中有空格，命令也需要有效。（提示：检查 `-d` 的标志 `xargs`）
 
+首先要思考 `find` 命令（即快速找到所有 .html 文件）
+
+关于 `find` 命令：
+```
+# find . -name "*.html*"  // 将目录下所有 .html 文件列出来
+# find . -type f          // 将目录下面所有文件列出来
+```
+
+关于 `xargs` 命令：
+```
+# xargs 可以捕获一个命令的输出，然后传递给另外一个命令
+find . -name "*.html" | xargs ls -l 
+# 这里就是将 html 文件按照 ls 列出来
+```
+
+关于 `zip` 命令：
+```
+# zip 命令:生成 zip 文件
+zip html.zip /home/html
+```
+
+所以结合一下可以得出答案：
+`find -name "*.html*" | xargs zip a  #找出所有的 html 文件生成一个 zip`  
+``
+(5) Write a command or script to recursively find the most recently modified file in a directory. More generally, can you list all files by recency?
+
+写一个命令或者脚本，来找到目录中最晚修改的文件（以递归的方式）。或者说是，能将所有文件按照最新修改时间进行排列。
+
+Answer : `find .-type f|xargs ls -c -lt`
+
+![[Pasted image 20221206221112.png]]
